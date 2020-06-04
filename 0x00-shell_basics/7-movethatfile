@@ -1,2 +1,2 @@
 #!/bin/bash
-echo cd /tmp mv betty /holberton
+echo betty /tmp /holberton
