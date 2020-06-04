@@ -5,3 +5,8 @@
 <h4>3-listfiles command ls-l</h4>
 <h4>4-listmorefiles ls-q</h4>
 <h4>5-listfilesdigitonly </h4>
+<h4>6-Welcome Holberton</h4>
+<h4>7-Betty in Holberton</h4>
+<h4>8-Bye bye Betty</4>
+<h4>9-Bye bye Holberton</4>
+<h4>10-Back to the future</4>
