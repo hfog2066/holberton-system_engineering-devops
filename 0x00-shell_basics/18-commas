@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -amp ⅼ short -d
+ls -amp | short -d
