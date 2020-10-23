@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
-# Fizzbuzz
-
+#Program that prints FizzBuzz sequence
 for i in {1..100}
 do
-    if [ $(( i%15 )) -eq 0 ]
+    if [ $((i % 5)) -eq 0 -a $((i % 3)) -eq 0 ]
     then
-        echo "Fizzbuzz"
-    elif [ $(( i%5 )) -eq 0 ]
+	echo "FizzBuzz"
+    elif [ $((i % 5)) -eq 0 ]
     then
-        echo "Buzz"
-    elif [ $(( i%3 )) -eq 0 ]
+	echo "Buzz"
+    elif [ $((i % 3)) -eq 0 ]
     then
-        echo "Fizz"
+	echo "Fizz"
     else
-        echo "$i"
+	echo "$i"
     fi
 done
