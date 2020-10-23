@@ -3,7 +3,7 @@
 
 if [ ! -e holbertonschool ]
 then
-    echo "holbertonschool file does no exist"
+    echo "holbertonschool file does not exist"
 else
     echo "holbertonschool file exists"
     if [ -s holbertonschool ]
