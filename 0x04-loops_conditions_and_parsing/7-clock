@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Display the time for 12 hts 59 min
+
+counter=0
+while [ $counter -le 12 ]
+do
+    echo "Hour: $counter"
+    min=1
+    while [ $min -lt 60 ]
+    do
+        echo "$min"
+	((min++))
+    done
+    ((counter++))
+
+done
