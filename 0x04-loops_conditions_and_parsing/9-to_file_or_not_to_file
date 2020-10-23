@@ -5,10 +5,10 @@ if [ ! -e holbertonschool ]
 then
     echo "holbertonschool file does no exist"
 else
-    echo "holbertonschool file exist"
+    echo "holbertonschool file exists"
     if [ -s holbertonschool ]
     then
-        echo "holbertonschool is not empty"
+        echo "holbertonschool file is not empty"
     else
         echo "holbertonschool file is empty"
     fi
