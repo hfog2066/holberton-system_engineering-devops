@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# installs nginx and changes the index
-
-sudo su
-apt-get install nginx -y
-rm /usr/share/nginx/html/index.html
-echo "Holberton School" > /usr/share/nginx/html/index.html
-service nginx restart
+# Script that installs Nginx server
+apt-get -y update
+apt-get -y install nginx
+echo "Holberton School" > /var/www/html/index.nginx-debian.html
+service nginx start
