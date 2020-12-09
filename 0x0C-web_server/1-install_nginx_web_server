@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# install nginix
+# installs nginx and changes the index
 
-sudo apt update &&
-sudo apt -y install nginx
-sudo ufw allow 'Nginx HTTP'
-echo 'Holberton School' > /var/www/html/index.html
-service nginx start
+sudo su <<HERE
+apt-get install nginx -y
+rm /usr/share/nginx/html/index.html
+echo "Holberton School" > /usr/share/nginx/html/index.html
+service nginx restart
+HERE
