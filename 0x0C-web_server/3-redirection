@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# Script that installs Nginx server and redirects /redirect_me
-apt-get -y update
-apt-get -y install nginx
+# Installs Nginx and config
+
+sudo apt-get update -y
+sudo apt-get install -y nginx
+
 echo "Holberton School" > /var/www/html/index.nginx-debian.html
-sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://twitter.com/hector_orozco7 permanent;"
-/etc/nginx/sites-enabled/default
-service nginx start
+sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://twitter.com/hector_orozco7 permanent;" /etc/nginx/sites-enabled/default
+
+sudo service nginx restart
