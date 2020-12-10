@@ -3,7 +3,6 @@
 apt-get -y update
 apt-get -y install nginx
 echo "Holberton School" > /var/www/html/index.nginx-debian.html
-sudo sed -i "/listen 80 default_server;/a rewrite ^/
-redirect_me https://twitter.com/hector_orozco7 permanent;" /etc/
-nginx/sites-enable/default
+sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://twitter.com/hector_orozco7 permanent;"
+/etc/nginx/sites-enabled/default
 service nginx start
