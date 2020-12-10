@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
-# Script that installs Nginx server, redirects /redirect_me and customizes 404 not found
-apt-get -y update
-apt-get -y install nginx
-echo "Holberton School" > /var/www/html/index.nginx-debian.html
-echo "Ceci n'est pas une page" > /usr/share/nginx/html/custom_404.html
-sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/hfog2066 permanent;\n\n\terror_page 404 \/custom_404.html;\n\tlocation = \/custom_404.html {\n\t\troot \/usr\/share\/nginx\/html;\n\t\tinternal;\n\t}/" /etc/nginx/sites-available/default
-service nginx start
+# Install nginx and config
+
+sudo apt-get update -y
+sudo apt-get install -y nginx
+
+echo "Holberton School" | sudo tee /var/www/html/index.html
+sudo sed -i "/listen 80 default_server;/a rewrite ^/redirect_me https://twitter.com/hector_orozco7 permanent;" /etc/nginx/sites-enabled/default
+
+echo "Ceci n'est pas une page" > /usr/share/nginx/html/page_error_404.html
+sudo sed -i '37i error_page 404 /page_error_404.html;\nlocation = /page_error_404.html {\nroot /usr/share/nginx/html; \ninternal;\n}\n' /etc/nginx/sites-enabled/default
+
+sudo service nginx restart
