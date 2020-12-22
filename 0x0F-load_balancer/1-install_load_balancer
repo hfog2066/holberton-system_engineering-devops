@@ -11,7 +11,7 @@ frontend front
 	default_backend back
 backend back
     balance roundrobin
-    server 2066-web-01 35.237.53.132:80 check
-    server 2066-web-02 35.185.109.159:80 check
+    server 2066-web-01 34.75.144.80:80 check
+    server 2066-web-02 34.75.114.192:80 check
 EOF
 service haproxy restart
