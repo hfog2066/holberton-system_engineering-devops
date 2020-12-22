@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-# Configures Nginx
-
-sudo apt update &&
-sudo apt -y install nginx
-sudo ufw allow 'Nginx HTTP'
-echo 'Holberton School' > /var/www/html/index.html
-echo "Ceci n'est pas une page" > /usr/share/nginx/html/custom_404.html
-sed -i "/listen 80 default_server/a add_header X-Served-By \"$HOSTNAME\";" /etc/nginx/sites-available/default
-sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.twitter.com/hector_orozco7 permanent;' /etc/nginx/sites-available/default
-sed -i '/listen 80 default_server/a error_page 404 /custom_404.html; location = /custom_404.html {root /usr/share/nginx/html;\n internal;}' /etc/nginx/sites-available/default
+#Configure your Nginx server
+sudo apt-get -y update
+sudo apt-get -y install nginx
+echo "Holberton School" > /var/www/html/index.nginx-debian.html
+sed -i '/server_name _;/ a rewrite ^/redirect_me https://twitter.com/hector_orozco7 permanent;' /etc/nginx/sites-available/default
+echo "Ceci n'est pas une page" > /var/www/html/page404.html
+sed -i '/server_name _;/ a error_page 404 /page404.html;\nlocation = /page404.html {\nroot /var/www/html;\ninternal;\n}' /etc/nginx/sites-available/default
+sudo sed -i '/http {/a add_header X-Served-By "\$HOSTNAME";' /etc/nginx/nginx.conf
 service nginx start
