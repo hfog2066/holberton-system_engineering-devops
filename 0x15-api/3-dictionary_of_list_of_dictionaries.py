@@ -1,26 +1,37 @@
-"""Script that uses REST API"""
+#!/usr/bin/python3
+'''Reads api '''
+
 import json
 import requests
+import sys
+
+base_url = 'https://jsonplaceholder.typicode.com/'
 
 
-def make_all(users=None, todos=None):
-    """Turns all payloads into JSON format"""
-    all_list = []
-    alljson = {}
-    with open("todo_all_employees.json", "w") as f:
-        for i in users:
-            u = i.get("id")
-            for i in todos:
-                if u == i.get("userId"):
-                    all_list.append({"username": users[0].get("username"),
-                                     "task": i.get("title"),
-                                     "completed": i.get("completed")})
-            alljson[u] = all_list
-        json.dump(alljson, f)
+def do_request():
+    '''Performs request'''
+    response = requests.get(base_url + 'users/')
+    if response.status_code != 200:
+        return print('Error: status_code:', response.status_code)
+    users = response.json()
 
+    response = requests.get(base_url + 'todos/')
+    if response.status_code != 200:
+        return print('Error: status_code:', response.status_code)
+    todos = response.json()
 
-if __name__ == "__main__":
-    users = requests.get("https://jsonplaceholder.typicode.com/users/").json()
-    todos = requests.get("https://jsonplaceholder.typicode.com/todos/").json()
+    data = {}
+    for user in users:
+        user_todos = [todo for todo in todos
+                      if todo.get('userId') == user.get('id')]
+        user_todos = [{'username': user.get('username'),
+                       'task': todo.get('title'),
+                       'completed': todo.get('completed')}
+                      for todo in user_todos]
+        data[str(user.get('id'))] = user_todos
 
-    make_all(users, todos)
+    with open('todo_all_employees.json', 'w') as file:
+        json.dump(data, file)
+
+if __name__ == '__main__':
+    do_request()
