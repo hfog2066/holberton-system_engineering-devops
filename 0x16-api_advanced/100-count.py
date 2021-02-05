@@ -1,72 +1,61 @@
 #!/usr/bin/python3
-"""
-defines recursive function to query the Reddit API
-to parse title of all hot article and print sorted count
-"""
+""" function that queries the Reddit API """
+from requests import get
+
+REDDIT = "https://www.reddit.com/"
+HEADERS = {'user-agent': 'my-app/0.0.1'}
 
 
-def count_words(subreddit, word_list, after=None, count={}):
+def count_words(subreddit, word_list, after="", word_dic={}):
     """
-    queries the Reddit API
-    parses title of all hot articles
-    prints sorted count of given keywords
+    Returns a list containing the titles of all hot articles for a
+    given subreddit. If no results are found for the given subreddit,
+    the function should return None.
     """
-    import json
-    import requests
-    if after is None:
-        sub_URL = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
-    else:
-        sub_URL = 'https://www.reddit.com/r/{}/hot.json?after={}'.format(
-            subreddit, after)
-    subreddit_info = requests.get(sub_URL,
-                                  headers={"user-agent": "user"},
-                                  allow_redirects=False)
-    for word in word_list:
-        word = word.lower()
-        if word not in count.keys():
-            count[word] = 0
-    try:
-        data = subreddit_info.json().get("data")
-    except:
-        return
-    children = data.get("children")
-    for child in children:
-        title = (child.get("data").get("title").lower())
-        title = title.split(' ')
+    if not word_dic:
         for word in word_list:
-            word = word.lower()
-            count[word] += title.count(word)
-    after = data.get("after")
+            word_dic[word] = 0
+
     if after is None:
-        result = []
-        for k in count.keys():
-            if count[k] != 0:
-                if result == []:
-                    result.append("{}: {}".format(k, count[k]))
-                else:
-                    for i in range(len(result)):
-                        if count[k] > int(result[i].split(' ')[1]):
-                            result = result[:i] + \
-                                     ["{}: {}".format(k, count[k])] + \
-                                     result[i:]
-                            break
-                        elif count[k] == int(result[i].split(' ')[1]):
-                            alpha_list = [k, result[i].split(' ')[0]]
-                            j = 1
-                            while count[k] == int(result[i + j].split(' ')[1]):
-                                alpha_list.append(result[i + j].split(' ')[0])
-                            alpha_list = alpha_list.sort
-                            for j in range(len(alpha_list)):
-                                if k == alpha_list[j]:
-                                    result = result[:i + j] + \
-                                             ["{}: {}".format(k, count[k])] + \
-                                             result[i + j:]
-                        else:
-                            continue
-                    else:
-                        result.append("{}: {}".format(k, count[k]))
-        if result != []:
-            for printing in result:
-                print(printing)
-        return
-    return (count_words(subreddit, word_list, after, count))
+        word_list = [[key, value] for key, value in word_dic.items()]
+        word_list = sorted(word_list, key=lambda x: (-x[1], x[0]))
+        for w in word_list:
+            if w[1]:
+                print("{}: {}".format(w[0].lower(), w[1]))
+        return None
+
+    url = REDDIT + "r/{}/hot/.json".format(subreddit)
+
+    params = {
+        'limit': 100,
+        'after': after
+    }
+
+    r = get(url, headers=HEADERS, params=params, allow_redirects=False)
+
+    if r.status_code != 200:
+        return None
+
+    try:
+        js = r.json()
+
+    except ValueError:
+        return None
+
+    try:
+
+        data = js.get("data")
+        after = data.get("after")
+        children = data.get("children")
+        for child in children:
+            post = child.get("data")
+            title = post.get("title")
+            lower = [s.lower() for s in title.split(' ')]
+
+            for w in word_list:
+                word_dic[w] += lower.count(w.lower())
+
+    except:
+        return None
+
+    count_words(subreddit, word_list, after, word_dic)
